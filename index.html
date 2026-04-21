@@ -1,36 +1,188 @@
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-KQMDZVQWFG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KQMDZVQWFG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  gtag('config', 'G-KQMDZVQWFG');
-</script>
+      gtag('config', 'G-KQMDZVQWFG');
+    </script>
 
-<h2 class="mt-5 mb-4">❄️ Maîtrise de la Chaîne du Froid (OxyONE)</h2>
-<div class="row">
-    <div class="col-md-4">
-        <div class="card border-primary mb-3">
-            <div class="card-header">Secteur Hypermarché</div>
-            <div class="card-body text-primary">
-                <p class="card-text">Suivi des stocks massifs et alertes froid négatif.</p>
-            </div>
-        </div>
+    <meta charset="UTF-8">
+    <title>OxyONE | Algérie 58 Wilayas</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body { margin: 0; background: #050505; color: #00d2ff; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
+        #gui { position: absolute; top: 10px; left: 10px; background: rgba(0, 20, 40, 0.95); padding: 20px; border-left: 4px solid #00d2ff; width: 310px; z-index: 100; border-radius: 0 10px 10px 0; box-shadow: 0 0 20px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto; }
+        .display-box { background: rgba(0,0,0,0.4); padding: 10px; border-radius: 5px; margin-bottom: 12px; text-align: center; border: 1px solid rgba(0,210,255,0.3); }
+        .main-val { font-size: 1.6em; font-weight: bold; color: #fff; }
+        .sub-label { font-size: 0.65em; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
+        .control-group { margin-bottom: 10px; }
+        .val-badge { float: right; background: #00d2ff; color: #050505; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 0.8em; }
+        select { width: 100%; background: #111; color: #00d2ff; border: 1px solid #00d2ff; padding: 8px; border-radius: 4px; margin-top: 5px; cursor: pointer; font-family: inherit; }
+        input[type=range] { width: 100%; cursor: pointer; accent-color: #00d2ff; margin-top: 5px; }
+        button { background: #00d2ff; border: none; padding: 12px; width: 100%; cursor: pointer; font-weight: bold; margin-top: 10px; border-radius: 5px; color: #050505; transition: 0.3s; }
+        #nav-pad { position: absolute; bottom: 30px; right: 30px; display: grid; grid-template-columns: repeat(3, 55px); grid-gap: 8px; }
+        .nav-btn { width: 55px; height: 55px; border: 2px solid #00d2ff; color: #00d2ff; display: flex; align-items: center; justify-content: center; cursor: pointer; background: rgba(0,210,255,0.1); font-weight: bold; border-radius: 8px; }
+    </style>
+</head>
+<body>
+<div id="gui">
+    <h2 style="margin:0; font-size: 1.2em; letter-spacing: 2px;">OxyONE 3D</h2>
+    <p style="font-size: 0.6em; margin: 5px 0 15px 0; color: #aaa;">Startup Labellisée@2021 | Ministère de l'Économie</p>
+    <div class="control-group">
+        <label style="font-size: 0.8em; opacity: 0.8;">📍 LOCALISATION (WILAYA)</label>
+        <select id="wilaya-select"></select>
     </div>
-    <div class="col-md-4">
-        <div class="card border-success mb-3">
-            <div class="card-header">Secteur Distribution</div>
-            <div class="card-body text-success">
-                <p class="card-text">Gestion des flux logistiques actifs vers Oran.</p>
-            </div>
-        </div>
+    <div class="display-box">
+        <div class="sub-label">Volume Calculé</div>
+        <div class="main-val"><span id="total-v">90.00</span> m³</div>
     </div>
-    <div class="col-md-4">
-        <div class="card border-info mb-3">
-            <div class="card-header">Secteur Particulier</div>
-            <div class="card-body text-info">
-                <p class="card-text">Garantie de conformité pour le consommateur final.</p>
-            </div>
-        </div>
+    <div class="display-box" style="border-color: rgba(255, 255, 255, 0.2);">
+        <div class="sub-label">Surface des Parois</div>
+        <div class="main-val"><span id="total-s">126.00</span> m²</div>
     </div>
+    <div class="display-box" id="temp-frame" style="border-color: #ff4444;">
+        <div class="sub-label">Consigne Température</div>
+        <div class="main-val" id="main-t">4°C</div>
+    </div>
+    <div class="control-group">
+        <label>Temp. Positive <span class="val-badge" style="background:#ff4444" id="v-tp">4°C</span></label>
+        <input type="range" id="tp" min="1" max="20" value="4" oninput="calculate()">
+    </div>
+    <div class="control-group">
+        <label>Temp. Négative <span class="val-badge" style="background:#4444ff" id="v-tn">0°C</span></label>
+        <input type="range" id="tn" min="-18" max="0" value="0" oninput="calculate()">
+    </div>
+    <hr style="opacity:0.1; margin: 15px 0;">
+    <div class="control-group">
+        <label>Largeur <span class="val-badge" id="v-w">6.0m</span></label>
+        <input type="range" id="rw" min="1" max="20" step="0.5" value="6" oninput="calculate()">
+    </div>
+    <div class="control-group">
+        <label>Hauteur <span class="val-badge" id="v-h">3.0m</span></label>
+        <input type="range" id="rh" min="1" max="8" step="0.5" value="3" oninput="calculate()">
+    </div>
+    <div class="control-group">
+        <label>Profondeur <span class="val-badge" id="v-d">5.0m</span></label>
+        <input type="range" id="rd" min="1" max="20" step="0.5" value="5" oninput="calculate()">
+    </div>
+    <button onclick="generatePDF()">GÉNÉRER RAPPORT TECHNIQUE</button>
 </div>
+<div id="nav-pad">
+    <div style="grid-column: 2" class="nav-btn" onmousedown="move('up')" onmouseup="stop()">▲</div>
+    <div class="nav-btn" onmousedown="move('left')" onmouseup="stop()">◀</div>
+    <div class="nav-btn" onclick="fullReset()">RESET</div>
+    <div class="nav-btn" onmousedown="move('right')" onmouseup="stop()">▶</div>
+    <div style="grid-column: 2" class="nav-btn" onmousedown="move('down')" onmouseup="stop()">▼</div>
+</div>
+<script>
+    const wilayas = [
+        "01 Adrar", "02 Chlef", "03 Laghouat", "04 Oum El Bouaghi", "05 Batna", "06 Béjaïa", "07 Biskra", "08 Béchar", 
+        "09 Blida", "10 Bouira", "11 Tamanrasset", "12 Tébessa", "13 Tlemcen", "14 Tiaret", "15 Tizi Ouzou", "16 Alger", 
+        "17 Djelfa", "18 Jijel", "19 Sétif", "20 Saïda", "21 Skikda", "22 Sidi Bel Abbès", "23 Annaba", "24 Guelma", 
+        "25 Constantine", "26 Médéa", "27 Mostaganem", "28 M'Sila", "29 Mascara", "30 Ouargla", "31 Oran", "32 El Bayadh", 
+        "33 Illizi", "34 Bordj Bou Arreridj", "35 Boumerdès", "36 El Tarf", "37 Tindouf", "38 Tissemsilt", "39 El Oued", 
+        "40 Khenchela", "41 Souk Ahras", "42 Tipaza", "43 Mila", "44 Aïn Defla", "45 Naâma", "46 Aïn Témouchent", "47 Ghardaïa", 
+        "48 Relizane", "49 El M'Ghair", "50 El Meniaa", "51 Ouled Djellal", "52 Bordj Baji Mokhtar", "53 Béni Abbès", 
+        "54 Timimoun", "55 Touggourt", "56 Djanet", "57 In Salah", "58 In Guezzam"
+    ];
+    const select = document.getElementById('wilaya-select');
+    wilayas.forEach(w => {
+        let opt = document.createElement('option');
+        opt.value = w; opt.innerHTML = w;
+        select.appendChild(opt);
+    });
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+    const light = new THREE.DirectionalLight(0xffffff, 1); light.position.set(5, 10, 7); scene.add(light);
+
+    const group = new THREE.Group();
+    const material = new THREE.MeshStandardMaterial({ color: 0x999999, metalness: 0.7, roughness: 0.2 });
+    const chamber = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), material);
+    group.add(chamber);
+    const door = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.7, 0.3), new THREE.MeshStandardMaterial({color: 0x111111}));
+    door.position.set(0.501, -0.1, 0); group.add(door);
+    scene.add(group);
+    scene.add(new THREE.GridHelper(50, 50, 0x00d2ff, 0x111111));
+    camera.position.set(12, 8, 12); camera.lookAt(0,0,0);
+
+    let vX = 0, vY = 0;
+    function move(d) {
+        if(d==='up') vX = -0.04; if(d==='down') vX = 0.04;
+        if(d==='left') vY = -0.04; if(d==='right') vY = 0.04;
+    }
+    function stop() { vX = 0; vY = 0; }
+
+    function fullReset() {
+        group.rotation.set(0,0,0);
+        document.getElementById('tp').value = 4; document.getElementById('tn').value = 0;
+        document.getElementById('rw').value = 6; document.getElementById('rh').value = 3; document.getElementById('rd').value = 5;
+        document.getElementById('wilaya-select').value = "16 Alger";
+        calculate();
+    }
+
+    function calculate() {
+        const w = parseFloat(document.getElementById('rw').value);
+        const h = parseFloat(document.getElementById('rh').value);
+        const d = parseFloat(document.getElementById('rd').value);
+        const tp = document.getElementById('tp').value;
+        const tn = document.getElementById('tn').value;
+        
+        document.getElementById('v-w').innerText = w.toFixed(1) + "m";
+        document.getElementById('v-h').innerText = h.toFixed(1) + "m";
+        document.getElementById('v-d').innerText = d.toFixed(1) + "m";
+        document.getElementById('v-tp').innerText = tp + "°C";
+        document.getElementById('v-tn').innerText = tn + "°C";
+        
+        document.getElementById('total-v').innerText = (w * h * d).toFixed(2);
+        const surface = (2 * (w * h)) + (2 * (d * h)) + (2 * (w * d));
+        document.getElementById('total-s').innerText = surface.toFixed(2);
+
+        group.scale.set(w, h, d);
+        group.position.y = h/2;
+        if(tn < 0) {
+            document.getElementById('main-t').innerText = tn + "°C";
+            document.getElementById('temp-frame').style.borderColor = "#4444ff";
+            chamber.material.color.setRGB(0.6, 0.8, 1);
+        } else {
+            document.getElementById('main-t').innerText = tp + "°C";
+            document.getElementById('temp-frame').style.borderColor = "#ff4444";
+            chamber.material.color.setRGB(0.8, 0.8, 0.8);
+        }
+    }
+
+    function generatePDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const wilaya = document.getElementById('wilaya-select').value;
+        doc.setFont("helvetica", "bold");
+        doc.text("OxyONE - RAPPORT TECHNIQUE", 20, 20);
+        doc.setFontSize(9); doc.setFont("helvetica", "normal");
+        doc.text("Wilaya : " + wilaya, 20, 30);
+        doc.text("Startup Labellisée@2021 | Ministère de l'Économie", 20, 35);
+        doc.line(20, 40, 190, 40);
+        doc.text("Volume: " + document.getElementById('total-v').innerText + " m3", 20, 55);
+        doc.text("Surface des Parois: " + document.getElementById('total-s').innerText + " m2", 20, 65);
+        doc.text("Consigne: " + document.getElementById('main-t').innerText, 20, 75);
+        doc.save("OxyONE_Rapport_" + wilaya + ".pdf");
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        group.rotation.x += vX; group.rotation.y += vY;
+        renderer.render(scene, camera);
+    }
+    animate(); calculate();
+</script>
+</body>
+</html>
