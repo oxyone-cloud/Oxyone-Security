@@ -1,0 +1,38 @@
+/* DESIGN EXCLUSIF OXYONE - DIGITAL SENSE */
+.digital-sense-container {
+    background-color: #0d1117; /* Noir profond industriel */
+    border: 2px solid #30363d;
+    border-radius: 8px;
+    padding: 20px;
+    font-family: 'Roboto Mono', monospace;
+    color: #c9d1d9;
+}
+
+.certification-badge {
+    background-color: #238636; /* Vert certification */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.8em;
+    text-transform: uppercase;
+}
+
+.berne-mention {
+    font-size: 10px;
+    color: #8b949e;
+    text-align: right;
+    margin-top: 15px;
+    border-top: 1px solid #30363d;
+    padding-top: 5px;
+}
+
+.data-log-view {
+    background: #161b22;
+    border-radius: 4px;
+    padding: 10px;
+    height: 200px;
+    overflow-y: auto;
+    font-size: 12px;
+    color: #58a6ff; /* Bleu oxygène */
+}
