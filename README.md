@@ -1,12 +1,29 @@
-<img width="640" height="521" alt="495391021_665448673000571_4748866864739225710_n-3" src="https://github.com/user-attachments/assets/aa6c6baa-e6db-472a-a8bd-61dda0610a03" />
-[![ORCID](https://img.shields.io/badge/ORCID-0009--0000--1250--8205-A6CE39?style=flat&logo=orcid&logoColor=white)](https://orcid.org/0009-0000-1250-8205)
+<p align="center">
+  <img width="640" alt="OxyONE Security" src="https://github.com/user-attachments/assets/aa6c6baa-e6db-472a-a8bd-61dda0610a03" />
+</p>
 
+<p align="center">
+  <a href="https://orcid.org/0009-0000-1250-8205">
+    <img src="https://img.shields.io/badge/ORCID-0009--0000--1250--8205-A6CE39?style=flat&logo=orcid&logoColor=white" alt="ORCID"/>
+  </a>
+  <img src="https://img.shields.io/badge/Startup_Labellisée-Algérie-blue?style=flat&logo=rocket&logoColor=white" alt="Startup Labellisée"/>
+</p>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/GoogleCloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white" alt="Google Cloud"/>
+  <img src="https://img.shields.io/badge/Fintech-Security-green?style=for-the-badge&logo=cashapp&logoColor=white" alt="Fintech Security"/>
+  <img src="https://img.shields.io/badge/Cybersecurity-Audit-red?style=for-the-badge&logo=shield&logoColor=white" alt="Cybersecurity"/>
+  <img src="https://img.shields.io/badge/Cloud-Protection-orange?style=for-the-badge&logo=cloud&logoColor=white" alt="Cloud Security"/>
+</p>
 
+# Oxyone-Security
+
+Module de sécurité, de contrôle d'accès et de conformité pour la plateforme **OxyONE**. Conçu pour garantir l'intégrité des flux de données, la gestion sécurisée des identités et la protection fintech/IoT.
+
+---
 
 ## Déploiement GCP
-Projet géré sur Google Cloud Shell ().
+Projet géré et administré via **Google Cloud Shell**.
 
-
-## Déploiement GCP
-Projet géré sur Google Cloud Shell ().
+---
+*SSCI SOLUTION OF COLD © 2026 – v2026.1*
